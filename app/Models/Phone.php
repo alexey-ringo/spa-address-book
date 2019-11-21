@@ -10,11 +10,11 @@ class Phone extends Model
 {
     protected $table = 'phones';
     protected $fillable = [
-        'customer_id', 'phone'
+        'contact_id', 'phone', 'description'
     ];
     
-    public function customer() {
+    public function contact() {
         //return $this->belongsTo(Customer::class, 'id');
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Contact::class);
     }
 }

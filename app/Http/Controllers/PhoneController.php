@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
+use App\Models\Contact;
 use App\Models\Phone;
 use Illuminate\Http\Request;
 use App\Http\Resources\Customer\PhoneCollection;
@@ -29,14 +29,10 @@ class PhoneController extends Controller
      */
     public function store(Request $request)
     {
-        $phone = Phone::create([
-            'customer_id' => $request->input('customer_id'),
-            'phone' => $request->input('phone'),
-        ]);
-        //Illuminate\Database\QueryException
+        $phone = Phone::create($request->only(['contact_id', 'phone']));
         
         if($phone) {
-            return response()->json(['message' => 'Дополнительный телефон клиента успешно добавлен']);
+            return response()->json(['message' => 'Дополнительный телефон контакта успешно добавлен']);
         }
         else {
             return response()->json(['message' => 'Внутранняя ошибка при добавлении телефона!'], 500);
@@ -51,9 +47,9 @@ class PhoneController extends Controller
      */
     public function show(int $id)
     {
-        $customer = Customer::find($id);
-        //return new PhoneCollection(Phone::where('customer_id', $customer->id)->get());
-        return new PhoneCollection($customer->phones);
+        $contact = Contact::find($id);
+        //return new PhoneCollection(Phone::where('contact_id', $contract->id)->get());
+        return new PhoneCollection($contact->phones);
     }
 
    
@@ -76,7 +72,7 @@ class PhoneController extends Controller
         ]);
         */
         $phone->phone = $request->input('phone');
-        $customer->save();
+        $contact->save();
         
         if($phone) {
             return response()->json(['data' => 1]);
@@ -99,7 +95,7 @@ class PhoneController extends Controller
             return response()->json(['data' => 1]);
         }
         else {
-            return response()->json(['message' => 'Внутренняя ошибка при удалении телефона клиента!']);
+            return response()->json(['message' => 'Внутренняя ошибка при удалении телефона контакта!']);
         }  
     }
 }

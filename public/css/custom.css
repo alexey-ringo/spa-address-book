@@ -7,3 +7,44 @@
   margin-top: 50px;
   font-size: 1.5rem;
 }
+
+@media (min-width: 576px) {
+  .content-wrapper,
+  .main-footer,
+  .main-header {
+    transition: margin-left 0.3s ease-in-out;
+    margin-left: 0;
+    z-index: 3000;
+  }
+}
+
+@media (min-width: 576px) and (prefers-reduced-motion: reduce) {
+  .content-wrapper,
+  .main-footer,
+  .main-header {
+    transition: none;
+  }
+}
+
+.content-wrapper > .content {
+  /*padding: 0 0.5rem;*/
+  padding: 50px;
+}
+
+@media (min-width: 576px) {
+  .sidebar-collapse .content-wrapper, .sidebar-collapse
+  .main-footer, .sidebar-collapse
+  .main-header {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .content-wrapper, .content-wrapper:before,
+  .main-footer,
+  .main-footer:before,
+  .main-header,
+  .main-header:before {
+    margin-left: 0;
+  }
+}

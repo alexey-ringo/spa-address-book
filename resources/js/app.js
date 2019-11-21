@@ -16,10 +16,6 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
-//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 //Импорт vue-роутера
 import VueRouter from 'vue-router';
@@ -30,21 +26,17 @@ import VueAxios from 'vue-axios';
 import axios from 'axios';
 Vue.use(VueAxios, axios);
 
-//import Vuex from 'vuex';
-//Vue.use(Vuex);
-
-//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
 //Импорт корневого компонента
-import App from "./components/App";
-
+//import App from "./components/App";
+import App from "./App";
 
 //Создание объекта собственного маршрутизатора и его импорт 
 import router from './router';
 
+Vue.config.productionTip = false;
+
 const app = new Vue({
     el: '#app',
-    //компонент, который будет рендериться в начальный момент времени
     render : h => h(App),
     router
 });

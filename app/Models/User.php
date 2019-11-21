@@ -53,6 +53,16 @@ class User extends Authenticatable
         return $this->is_admin;
     }
     
+    public function contacts() {
+      return $this->hasMany(Contact::class, 'user_id', 'id');
+    }
+    
+    
+    
+    
+    
+    
+    
     public function roles() {
       return $this->belongsToMany(Role::class,'role_user');
     }

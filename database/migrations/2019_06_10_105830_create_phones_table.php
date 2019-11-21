@@ -15,9 +15,10 @@ class CreatePhonesTable extends Migration
     {
         Schema::create('phones', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('customer_id')->unsigned();
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->bigInteger('contact_id')->unsigned();
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->bigInteger('phone')->unique();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -30,7 +31,7 @@ class CreatePhonesTable extends Migration
     public function down()
     {
         Schema::table('phones', function (Blueprint $table) {
-            $table->dropForeign('phones_customer_id_foreign');
+            $table->dropForeign('phones_contact_id_foreign');
         });
         Schema::dropIfExists('phones');
     }

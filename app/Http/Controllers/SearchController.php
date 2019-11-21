@@ -3,40 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Customer;
-use App\Models\Phone;
-use App\Models\Task;
-use App\Http\Resources\Customer\PhoneCollection;
-use App\Http\Resources\Customer\PhoneResource;
-use App\Http\Resources\Customer\CustomerCollection;
-use App\Http\Resources\Customer\CustomerResource;
-use App\Http\Resources\Customer\CustomerRelationResource;
+use App\Models\Contact;
+use App\Http\Resources\Contact\ContactCollection;
+use Auth;
 
 
 class SearchController extends Controller
 {
-    public function searchPhone(Request $request)
+    protected $user;
+    
+    public function __construct()
     {
-        $phone = Phone::where('phone', $request->keywords)->first();
-        if($phone) {
-            $customer = $phone->customer;
-            //return new CustomerResource($customer->with('phones', 'contracts')->first());
-            return new CustomerRelationResource($customer);
-        }
-        else {
-            return response()->json(['data' => 0]);
-        }
+       $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+
+            return $next($request);
+        });
     }
     
-    public function searchSurname(Request $request)
+    public function search(Request $request)
     {
-        //$customer = Customer::where('surname', $request->keywords)->get();
-        $customers = Customer::where('surname', 'LIKE', '%' . $request->keywords . '%')->with('contracts')->get();
-        if($customers->isEmpty()) {
-            return response()->json(['data' => 0]);
+        if(empty($this->user)) {
+            return response()->json(['message' => 'Поиск невозможен - не найден текущий пользователь!'], 500);
         }
-        else {
-            return new CustomerCollection($customers);
-        }
+        $search = $request->input('keywords');
+        $contacts = Contact::latest()
+                    ->where('user_id', $this->user->id)
+                    ->where('surname', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhereHas('phones', function($q) use($search) {
+                        $q->where('phone', 'like', '%' . $search . '%');
+                    })
+        ->with('phones')->paginate(1);
+        
+        return new ContactCollection($contacts);
     }
 }

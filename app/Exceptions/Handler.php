@@ -57,22 +57,28 @@ class Handler extends ExceptionHandler
     {
     //    if ($exception instanceof \App\Exceptions\WorkflowException)  {
     //        return $exception->render($request);
-            
+        
+        /*    
         if ($exception instanceof ModelNotFoundException) {
             return response()->json(['message' => 'Entry for '.str_replace('App\\', '', $exception->getModel()).' not found'], 404);
         } 
         else if ($exception instanceof FatalThrowableError) {
             return response()->json(['message' => $exception->getMessage()], 500);
-        } 
+        }
+        */
+        
         //else if ($exception instanceof ReflectionException) {
         //    return response()->json(['message' => $exception->getMessage()], 500);
         //}
+        
+        /*
         else if ($exception instanceof WorkflowException) {
             return response()->json(['message' => $exception->getMessage()], 422);
         } 
         else if ($exception instanceof QueryException) {
             return response()->json(['message' => $exception->getMessage()], 422);
         }
+        */
         
         return parent::render($request, $exception);
     }
